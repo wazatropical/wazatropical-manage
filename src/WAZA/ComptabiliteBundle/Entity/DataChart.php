@@ -2,9 +2,11 @@
 namespace WAZA\ComptabiliteBundle\Entity;
 
 class DataChart{    
+    private $labelsjour;
     private $labelsmois;
-    private $datasmois;    
     private $labelsannee;
+    private $datasjour; 
+    private $datasmois;
     private $datasannee;
     
     public function getLabelsmois(){
@@ -15,8 +17,16 @@ class DataChart{
         return $this->datasmois;
     }
     
+    public function getDatasjour(){
+        return $this->datasjour;
+    }
+
     public function getLabelsannee(){
         return $this->labelsannee;
+    }
+    
+    public function getLabelsjour(){
+        return $this->labelsjour;
     }
     
     public function getDatasannee(){
@@ -25,10 +35,18 @@ class DataChart{
     
     public function setLabelsmois($nLabelsmois){
         $this->labelsmois = $nLabelsmois;
+    }  
+    
+    public function setLabelsjour($nLabelsjour){
+        $this->labelsjour = $nLabelsjour;
     }
     
     public function setDatasmois($nDatasmois){
         $this->datasmois = $nDatasmois;
+    }
+     
+    public function setDatasjour($nDatasjour){
+        $this->datasjour = $nDatasjour;
     }
     
     public function setLabelsannee($nLabelsannee){
