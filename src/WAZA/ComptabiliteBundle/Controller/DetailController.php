@@ -35,10 +35,13 @@ class DetailController extends Controller
         $titre = "détails de la production";
         $chGainMois = new Highchart();
         $chGainAnnee = new Highchart();
+        $chGainJour = new Highchart();
         $chDepMois = new Highchart();
         $chDepAnnee = new Highchart();
+        $chDepJour = new Highchart();
         $chCompMois = new Highchart();
         $chCompAnnee = new Highchart();
+        $chCompJour = new Highchart();
         
         $puconvert1Gain = array();
         $puconvert2Gain = array();
@@ -168,9 +171,11 @@ class DetailController extends Controller
             $i = 0;
             $totalannee = 0;
             $totalmois = 0;
+            $totaljour = 0;
             $annee = $object[0]->getDate()->format('Y');
             $anneebis = $object[0]->getDate()->format('Y');
             $mois = $object[0]->getDate()->format('m');
+            $jour = $object[0]->getDate()->format('d');
             foreach($object as $o){
                 $pt = $o->getQuantite() * $puconvert[$i];
                 if($annee == $o->getDate()->format('Y')){
@@ -191,6 +196,16 @@ class DetailController extends Controller
                     $anneebis = $o->getDate()->format('Y');
                     $totalmois = $pt;
                 }
+                
+                if(($jour == $o->getDate()->format('d')) AND ($mois == $o->getDate()->format('m')) AND ($anneebis == $o->getDate()->format('Y'))){
+                    $totaljour += $pt;
+                }else{
+                    $datasjour[] = $totaljour;
+                    $labelsjour[] = $object[$i - 1]->getDate()->format('d')." ".$object[$i - 1]->getDate()->format('m')." ".$object[$i - 1]->getDate()->format('Y');
+                    $jour = $o->getDate()->format('d');
+                    $anneebis = $o->getDate()->format('Y');
+                    $totaljour = $pt;
+                }
                 $i += 1;
             }
 
@@ -202,11 +217,18 @@ class DetailController extends Controller
                 $datasmois[] = $totalmois;
                 $labelsmois[] = $object[sizeof($object) - 1]->getDate()->format('F')." ".$object[sizeof($object) - 1]->getDate()->format('Y');
             }
+            
+            if($jour == $object[sizeof($object) - 1]->getDate()->format('d') AND $mois == $object[sizeof($object) - 1]->getDate()->format('m') AND ($anneebis == $object[sizeof($object) - 1]->getDate()->format('Y'))){
+                $datasjour[] = $totaljour;
+                $labelsjour[] = $object[$i - 1]->getDate()->format('d')." ".$object[$i - 1]->getDate()->format('m')." ".$object[$i - 1]->getDate()->format('Y');
+            }
 
+            $dataChart->setDatasmois($datasjour);
             $dataChart->setDatasmois($datasmois);
             $dataChart->setDatasannee($datasannee);
             $dataChart->setLabelsannee($labelsannee);
             $dataChart->setLabelsmois($labelsmois);
+            $dataChart->setLabelsmois($labelsjour);
         }
         return $dataChart;
     }
