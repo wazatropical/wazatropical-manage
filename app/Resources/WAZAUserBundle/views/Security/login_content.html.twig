@@ -1,0 +1,58 @@
+{% extends "WAZAGestionBundle:Default:layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Authentification{% endblock %}
+{% block body %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+    <style>
+        .container{
+            
+        }
+        
+        form{
+            padding:10px;
+            height: 400px;
+        }
+    </style>    
+        
+        <div class="container">
+            <div class="row">
+                <h1 class="col-lg-push-5 col-lg-4 text-center text-warning">Authentification</h1>
+            </div>
+            <div class="row">
+                <form action="{{ path("fos_user_security_check") }}" method="post" class="col-lg-push-6 col-lg-2">
+                    <img id="logo_image" src="{{ asset('Logo.png') }}"/>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    {% if error %}
+                        <span class="label label-danger">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </span>
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="control-label" for="username">{{ 'security.login.username' | trans({}, 'FOSUserBundle') }}
+                            <input  class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">{{ 'security.login.password' | trans({}, 'FOSUserBundle') }}
+                            <input class="form-control" type="password" id="password" name="_password" required="required" />
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label for="remember_me"><input class="check-box" type="checkbox" id="remember_me" name="_remember_me" value="on" />{{ 'security.login.remember_me' | trans({}, 'FOSUserBundle') }}</label>
+                    </div>
+
+                    <input type="submit"
+                           class="btn btn-success"
+                           id="_submit"
+                           name="_submit"
+                           value="{{ 'security.login.submit'| trans({}, 'FOSUserBundle') }}" />
+                </form>
+            </div>
+            <div class="row">
+                <h2 class="col-lg-push-5 col-lg-4 text-center text-success text-bold">Waza Tropical</h2>
+            </div>
+        </div>
+{% endblock %}

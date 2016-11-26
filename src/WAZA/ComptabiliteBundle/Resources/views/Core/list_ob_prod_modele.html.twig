@@ -1,0 +1,273 @@
+{% extends "WAZAComptabiliteBundle:Core:listproduction.html.twig" %}
+
+{% block linkbar %}
+    {{ parent()}}<span class="glyphicon glyphicon-chevron-right"></span><a href="{{ path('waza_production_list') }}">{{ datas.nom | capitalize }}</a>
+{% endblock %}
+
+{% block contenu_head %}
+                
+{% endblock %}
+
+{% block contenu_production %}
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover col-lg-4">
+                <thead>
+                    <tr>
+                        <th>Information sur la production</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Nom</td>
+                    <td>{{ datas.nom | capitalize }}</td>
+                  </tr>
+                  <tr>
+                    <td>Enregistre le</td>
+                    <td>{{ datas.dateenreg | date("d/m/Y") }}</td>
+                  </tr>
+                  <tr>
+                    <td>Date de debut</td>
+                    <td>{{ datas.datedebut | date("d/m/Y") }}</td>
+                  </tr>
+                  <tr>
+                    <td>Date de fin envisagee</td>
+                    <td>{{ datas.datefinv | date("d/m/Y") }}</td>
+                  </tr>
+                  <tr>
+                    <td>Budget</td>
+                    <td>{{ convertbudget | number_format(2, '.', ',')}} {{ app.user.settings.monnaie1.code }}</td>
+                  </tr>
+                  <tr>
+                    <td>Description</td>
+                    <td>{{ datas.description }}</td>
+                  </tr>
+                  <tr>
+                    <td>Etat</td>
+                    <td>
+                        {% if datas.etat == true %}
+                            {{ "Actif" }}
+                        {% else %}
+                            {{ "Inactif" }}
+                        {% endif %}
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+        {% set totalGain = 0 %}
+        {% set totalDep = 0 %}
+        {% for valeur, o in objGain %}
+            {% if puconvert1Gain | length != 0 %}
+                {% set totalGain = totalGain + puconvert1Gain[valeur] * o.quantite %}
+            {% else %}
+                {% set totalGain = totalGain + 0 %}
+            {% endif %}
+        {% endfor %}
+        {% for valeur, o in objDep %}
+            {% if puconvert1Dep | length != 0 %}
+                {% set totalDep = totalDep + puconvert1Dep[valeur] * o.quantite %}
+            {% else %}
+                {% set totalDep = totalDep + 0 %}
+            {% endif %}
+        {% endfor %}
+        {% set benefice = totalGain - totalDep %}
+        {% set reste = convertbudget + benefice %}
+        <div class="row">
+            <div class="list-group col-lg-4">
+                <a href="#" class="list-group-item active">Informations</a>
+                <a href="#" class="list-group-item">Benefice visé
+                    <span class="label label-default">{{ convertbeneficev | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code }}</span>
+                </a>
+                <a href="#" class="list-group-item">Benefice actuel
+                    {% if benefice < 0 %}
+                        <span class="label label-danger">{{ benefice | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code}}</span>
+                    {% elseif benefice == 0 %}
+                        <span class="label label-default">{{ benefice | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code}}</span>
+                    {% else %}
+                        <span class="label label-success">{{ benefice | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code}}</span>
+                    {% endif %}
+                    
+                    {% if benefice < datas.beneficev %}
+                        <span style="color: red;" class="glyphicon glyphicon-arrow-down"></span>
+                    {% elseif benefice == convertbeneficev %}
+                        <span class="glyphicon glyphicon-arrow-right"></span>
+                    {% else %}
+                        <span style="color: green;" class="glyphicon glyphicon-arrow-up"></span>
+                    {% endif %}
+                </a>
+                <a href="#" class="list-group-item">Reste en caisse de cette production
+                    {% if reste < 0 %}
+                        <span class="label label-danger">{{ reste | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code}}</span>
+                    {% elseif reste == 0 %}
+                        <span class="label label-default">{{ reste | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code}}</span>
+                    {% else %}
+                        <span class="label label-success">{{ reste | number_format(2, '.', ',') ~' '~app.user.settings.monnaie1.code}}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <h2 class="row">Operations</h2>
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#gain">Gains</a></li>
+                <li><a data-toggle="tab" href="#depense">Depenses</a></li>
+                <li><a data-toggle="tab" href="#visualisation">Visualisation globale</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="gain" class="tab-pane fade in active container">
+                    <div class="row">
+                        <h3>Gains</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table table-striped table-bordered table-condensed table-hover" data-url="data1.json" data-height="299" data-click-to-select="true">
+                            <thead>
+                                {% include "WAZAComptabiliteBundle:Core:entete_prod_ob.html.twig" %}
+                            </thead>
+                            <tbody>
+                                {% set totalGain = 0 %}
+                                {% set ptotal1 = 0 %}
+                                {% for valeur, o in objGain %}
+                                    {% if puconvert1Gain | length != 0 %}
+                                        {% set gain1 = puconvert1Gain[valeur] %}
+                                        {% set gain2 = puconvert2Gain[valeur] %}
+                                        {% set gain3 = puconvert3Gain[valeur] %}
+                                    {% endif %}
+                                    <tr>
+                                        <td>{{ o.date | date("d/m/Y")}}</td>
+                                        <td>{{ o.objet.nom }}</td>
+                                        <td>{{ gain1 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ gain2 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ gain3 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ o.objet.mesure.code | capitalize }}</td>
+                                        <td>{{ o.quantite | number_format(2, '.', ',') }}</td>
+                                        {% set ptotal1 = gain1 * o.quantite %}
+                                        {% set ptotal2 = gain2 * o.quantite %}
+                                        {% set ptotal3 = gain3 * o.quantite %}
+                                        {% set totalGain = totalGain + ptotal1 %}
+                                        <td>{{ ptotal1 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ ptotal2 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ ptotal3 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ totalGain | number_format(2, '.', ',') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="7">TOTAL</td>
+                                    <td>{{ totalGain | number_format(2, '.', ',') }}</td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>                             
+                    <div class="row">
+                        <script type="text/javascript">
+                            {{ chart(chartGainMois) }}
+                            {{ chart(chartGainAnnee) }}
+                        </script>
+                        <div id="linechart1" class="col-lg-6"> </div>
+                        <div id="linechart2" class="col-lg-6"> </div>
+                    </div>
+                </div>
+                <div id="depense" class="tab-pane fade in active container">
+                    <div class="row">
+                        <h3>Depenses</h3>
+                    </div>
+                    <div class="row">
+                        <table class="table table-striped table-bordered table-condensed table-hover" data-url="data1.json" data-height="299" data-click-to-select="true">
+                            <thead>
+                                {% include "WAZAComptabiliteBundle:Core:entete_prod_ob.html.twig" %}
+                            </thead>
+                            <tbody>
+                                {% set totalDep = 0 %}
+                                {% set ptotal1 = 0 %}
+                                {% for valeur, o in objDep %}
+                                    {% if puconvert1Dep | length != 0 %}
+                                        {% set dep1 = puconvert1Dep[valeur] %}
+                                        {% set dep2 = puconvert2Dep[valeur] %}
+                                        {% set dep3 = puconvert3Dep[valeur] %}
+                                    {% endif %}
+                                    <tr>
+                                        <td>{{ o.date | date("d/m/Y")}}</td>
+                                        <td>{{ o.objet.nom }}</td>
+                                        <td>{{ dep1 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ dep2 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ dep3 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ o.objet.mesure.code | capitalize }}</td>
+                                        <td>{{ o.quantite | number_format(2, '.', ',') }}</td>
+                                        {% set ptotal1 = dep1 * o.quantite %}
+                                        {% set ptotal2 = dep2 * o.quantite %}
+                                        {% set ptotal3 = dep3 * o.quantite %}
+                                        {% set totalDep = totalDep + ptotal1 %}
+                                        <td>{{ ptotal1 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ ptotal2 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ ptotal3 | number_format(2, '.', ',') }}</td>
+                                        <td>{{ totalDep | number_format(2, '.', ',') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="7">TOTAL</td>
+                                    <td>{{ totalDep | number_format(2, '.', ',') }}</td>
+                                    <td colspan="3"></td>
+                                </tr>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <script type="text/javascript">
+                            {{ chart(chartDepMois) }}
+                            {{ chart(chartDepAnnee) }}
+                        </script>
+                        <div id="linechart3" class="col-lg-6"> </div>
+                        <div id="linechart4" class="col-lg-6"> </div>
+                    </div>
+                </div>
+                <div id="visualisation" class="tab-pane fade in active container">
+                    <h3>Visualisation globale</h3>                
+                    <script type="text/javascript">
+                        {{ chart(chartCompMois) }}
+                        {{ chart(chartCompAnnee) }}
+                    </script>
+                    <div id="linechart5" class="col-lg-6"> </div>
+                    <div id="linechart6" class="col-lg-6"> </div>
+                </div>
+            </div>
+        </div>
+    </div>                        
+<div  class="modal fade" id="modifier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Modifier une production</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit" class="form" method="POST" action="{{ path('waza_production_edit', {'id': id, 'stay': true}) }}">
+                    {{ form(formEditModal) }}
+                </form>
+             </div>
+             <div class="modal-footer">
+                 
+             </div>
+         </div>
+     </div>
+</div>
+                                    
+<div  style="display: none;"  class="modal fade" id="effacerCurrentProd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Effacer cette production</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form_delete" class="form" method="POST" action="{{ path('waza_production_delete', {'ids': id }) }}">
+                        <h3 id="confirm"></h3>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
+                        <button type="submit" class="btn btn-primary" id="effaSubmit">Oui</button>
+                </form>
+             </div>
+             <div class="modal-footer">
+             </div>
+         </div>
+     </div>
+ </div>  
+{% endblock %}

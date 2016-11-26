@@ -1,0 +1,102 @@
+{% extends "WAZAGestionBundle:Default:index.html.twig" %}
+{% block body %}
+    <style>
+        form fieldset div{
+            margin-bottom:10px;
+        }
+        
+        label{
+            margin-left:15px;
+        }
+        
+        .row .form-group{
+            margin-bottom:10px;
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <h1 class="col-lg-4 text-warning">Paramètres généraux</h1>
+        </div>
+        {% for message in app.session.flashbag.get('notice') %}
+            <div class="alert alert-danger alert-dismissable text-center col-lg-12" style="height:25px;">
+                <button type="button" class="close col-lg-2" data-dismiss="alert">&times;</button>
+                <strong class="col-lg-10">{{ message }}</strong>
+            </div>
+        {% endfor %}        
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab1">Entreprise</a></li>
+                <li><a data-toggle="tab" href="#tab2">Base de données</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab1" class="tab-pane fade in active container">
+                    <div class="row">
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.nomEntreprise, "Nom:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                            <div class="col-lg-10">
+                                {{ form_widget(form.nomEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.siteWebEntreprise, "Site web:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                            <div class="col-lg-10">
+                                {{ form_widget(form.siteWebEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.emailEntreprise, "Email:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                            <div class="col-lg-10">
+                                {{ form_widget(form.emailEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.telEntreprise, "Téléphone:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                            <div class="col-lg-10">
+                                {{ form_widget(form.telEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                            </div>
+                        </div>
+                        <fieldset class="col-lg-12">
+                            <legend>Adresse</legend>
+                            <div class="form-group">
+                                {{ form_label(form.paysEntreprise, "Pays:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                                <div class="col-lg-10">
+                                    {{ form_widget(form.paysEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.codePostalEntreprise, "Code postal:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                                <div class="col-lg-10">
+                                    {{ form_widget(form.codePostalEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.villeEntreprise, "Ville:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                                <div class="col-lg-10">
+                                    {{ form_widget(form.villeEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.rueEntreprise, "Rue:", {'label_attr': {'class': 'col-lg-2 control-label'}}) }}
+                                <div class="col-lg-10">
+                                    {{ form_widget(form.rueEntreprise, {'attr': {'class': 'col-lg-10 form-control'}}) }}
+                                </div>
+                            </div>
+                        </fieldset>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                <div id="tab2" class="tab-pane fade in active container">
+                    <div class="row">
+                        <h3>Base de données</h3>
+                    </div>
+                    <div class="row">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,249 @@
+waza_comptabilite_homepage:
+    path:     /
+    defaults:
+        _controller: WAZAComptabiliteBundle:Default:index 
+
+waza_objet_add:
+    path: /objet/ajouter/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Objet:addObjet
+    options:
+        expose: true
+
+waza_objet_delete:
+    path: /objet/delete/{ids}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Objet:deleteObjet
+    options:
+        expose: true
+
+waza_objet_list:
+    path: /objet/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Objet:listObjet
+
+waza_objet_edit:
+    path: /objet/edit/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Objet:editObjet
+    requirements:
+        id: \d*
+    options:
+        expose: true
+
+waza_objet_search:
+    path: /objet/search/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Objet:searchObjet
+    options:
+        expose: true
+
+waza_producteur_list:
+    path: /producteur/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Producteur:listProducteur
+
+waza_producteur_add:
+    path: /producteur/ajouter/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Producteur:addProducteur
+    options:
+        expose: true
+
+waza_producteur_delete:
+    path: /producteur/delete/{ids}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Producteur:deleteProducteur
+    options:
+        expose: true
+
+waza_producteur_edit:
+    path: /producteur/edit/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Producteur:editProducteur
+    requirements:
+        id: \d*
+    options:
+        expose: true
+
+waza_producteur_search:
+    path: /producteur/search/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Producteur:searchProducteur
+    options:
+        expose: true
+
+waza_gain_list:
+    path: /gain/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Gain:listGain
+
+waza_gain_add:
+    path: /gain/ajouter/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Gain:addGain
+    options:
+        expose: true
+
+waza_gain_delete:
+    path: /gain/delete/{ids}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Gain:deleteGain
+    options:
+        expose: true
+
+waza_gain_list:
+    path: /gain/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Gain:listGain
+
+waza_gain_edit:
+    path: /gain/edit/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Gain:editGain
+    requirements:
+        id: \d*
+    options:
+        expose: true
+
+waza_gain_search:
+    path: /gain/search/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Gain:searchGain
+    options:
+        expose: true
+
+waza_dep_list:
+    path: /dep/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Dep:listDep
+
+waza_dep_add:
+    path: /dep/ajouter/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Dep:addDep
+    options:
+        expose: true
+
+waza_dep_delete:
+    path: /dep/delete/{ids}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Dep:deleteDep
+    options:
+        expose: true
+
+waza_dep_list:
+    path: /dep/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Dep:listDep
+
+waza_dep_edit:
+    path: /dep/edit/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Dep:editDep
+    requirements:
+        id: \d*
+    options:
+        expose: true
+
+waza_dep_search:
+    path: /dep/search/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Dep:searchDep
+    options:
+        expose: true
+
+waza_op_objet_list:
+    path: /operation-objet/{op}/liste/{id}/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Operation:listObjet
+    requirements:
+        id: \d+
+    options:
+        expose: true
+
+waza_op_objet_add:
+    path: /operation-objet/{op}/ajouter/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Operation:addObjet
+    options:
+        expose: true
+
+waza_op_objet_delete:
+    path: /operation-objet/{op}/delete/{id}/{ids}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Operation:deleteObjet
+    options:
+        expose: true
+
+waza_op_objet_edit:
+    path: /operation-objet/{op}/edit/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Operation:editObjet
+    requirements:
+        id: \d*
+    options:
+        expose: true
+
+waza_production_list:
+    path: /production/liste/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Production:listProduction
+
+waza_production_add:
+    path: /production/ajouter/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Production:addProduction
+    options:
+        expose: true
+
+waza_production_delete:
+    path: /production/delete/{ids}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Production:deleteProduction
+    options:
+        expose: true
+
+waza_production_edit:
+    path: /production/edit/{id}
+    defaults:
+        _controller: WAZAComptabiliteBundle:Production:editProduction
+    requirements:
+        id: \d*
+    options:
+        expose: true
+
+waza_production_search:
+    path: /production/search/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Production:searchProduction
+    options:
+        expose: true
+        
+waza_prod_op_list:
+    path: /production/liste/{id}/
+    defaults:
+        _controller: WAZAComptabiliteBundle:Detail:listObjet
+    requirements:
+        id: \d+
+    options:
+        expose: true
+        
+waza_prod_op_add:
+    path: /production/liste
+    defaults:
+        _controller: WAZAComptabiliteBundle:Detail:addOp
+    requirements:
+        id: \d+
+    options:
+        expose: true
+        
+        
+waza_prod_op_edit:
+    path: /production/liste
+    defaults:
+        _controller: WAZAComptabiliteBundle:Detail:editOp
+    requirements:
+        id: \d+
+    options:
+        expose: true        

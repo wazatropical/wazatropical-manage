@@ -1,0 +1,99 @@
+{% extends "WAZAGestionBundle:Default:index.html.twig" %}
+{% block body %}
+    <style>
+        form fieldset div{
+            margin-bottom:10px;
+        }
+        label{
+            margin-left:15px;
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <h1 class="col-lg-4 text-warning">Parametres utilisateur</h1>
+        </div>
+        {% for message in app.session.flashbag.get('notice') %}
+            <div class="alert alert-danger alert-dismissable text-center col-lg-12" style="height:25px;">
+                <button type="button" class="close col-lg-2" data-dismiss="alert">&times;</button>
+                <strong class="col-lg-10">{{ message }}</strong>
+            </div>
+        {% endfor %}
+        <form method="POST" action="{{ path('waza_settings_user_save', {'userid': app.user.id }) }}" class="col-lg-8">
+            <fieldset>
+                <legend>Monnaies par defaut</legend>
+                <div class="row">
+                    <label>Monnaie 1:</label>
+                    <select name="monnaie1" class="col-lg-5 selectpicker" data-live-search="true" id="selectmonnaie">
+                        {% for monnaie in monnaies %}
+                            <optgroup label="{{ monnaie.description | capitalize }}">
+                                <option value="{{ monnaie.id }}" data-tokens="{{ monnaie.description }}"
+                                    {% if monnaie.code == currentMonnaie1 %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ monnaie.code | upper }}
+                                </option>
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Monnaie 2:</label>
+                    <select name="monnaie2" class="col-lg-5 selectpicker" data-live-search="true" id="selectmonnaie">
+                        {% for monnaie in monnaies %}
+                            <optgroup label="{{ monnaie.description | capitalize }}">
+                                <option value="{{ monnaie.id }}" data-tokens="{{ monnaie.description }}"
+                                    {% if monnaie.code == currentMonnaie2 %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ monnaie.code | upper }}
+                                </option>
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row">
+                    <label>Monnaie 3:</label>
+                    <select name="monnaie3" class="col-lg-5 selectpicker" data-live-search="true" id="selectmonnaie">
+                        {% for monnaie in monnaies %}
+                            <optgroup label="{{ monnaie.description | capitalize }}">
+                                <option value="{{ monnaie.id }}" data-tokens="{{ monnaie.description }}"
+                                    {% if monnaie.code == currentMonnaie3 %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ monnaie.code | upper }}
+                                </option>
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Extensions d'exportation de fichier par defaut</legend>
+                <div class="row">
+                    <label>Extension:</label>
+                    <select name="extension" class="col-lg-5 selectpicker" data-live-search="true" id="selectmonnaie">
+                        {% for extension in extensions %}
+                            <optgroup label="{{ extension.description | capitalize }}">
+                                <option value="{{ extension.id }}" data-tokens="{{ extension.description }}"
+                                    {% if extension.code == currentExtension %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ extension.code | upper }}
+                                </option>
+                            </optgroup>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>            
+            <div class="row">
+                <button type="submit" name="action" class="btn btn-success col-lg-2 btn-md" data-toggle="modal" data-target="#modifier">
+                    <span class="glyphicon glyphicon-edit"></span>Enregistrer
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

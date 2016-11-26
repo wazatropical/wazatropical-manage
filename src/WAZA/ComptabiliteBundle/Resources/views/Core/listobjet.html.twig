@@ -1,0 +1,149 @@
+{% extends "WAZAComptabiliteBundle:Core:contenu.html.twig" %}
+
+{% block linkbar %}
+    {{ parent()}}<span class="glyphicon glyphicon-chevron-right"></span>
+    {% if op is not defined %}
+        <a href="{{ path('waza_objet_list') }}">Objets</a>
+    {% else %}
+        {% if typeOperation is not defined %}
+            <a href="{{ path('waza_objet_list') }}">{{ "s" }}</a><span class="glyphicon glyphicon-chevron-right"></span> {{ "fd" }}
+        {% endif %}
+        {% if typeOperation is defined %}
+            <a href="{{ path('waza_objet_list') }}">{{ typeOperation | capitalize ~ "s" }}</a><span class="glyphicon glyphicon-chevron-right"></span> {{ operation.nom }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block contenu_head %}
+                <tr>
+                    <th data-field="state" data-checkbox="true"><input type="checkbox" id="checkbox"></th>
+                    {% if op is defined %}
+                        <th data-field="date" data-align="center">Date</th>
+                    {% endif %}
+                    <th data-field="nom" data-align="center">Nom</th>
+                    {% if op is defined %}
+                        <th data-field="puconvert" data-align="center" id="head_u_tabmonnaie">Prix unitaire ({{ app.user.settings.monnaie1.code }})</th>
+                        <th data-field="puconvert" data-align="center" id="head_u_tabmonnaie">Prix unitaire ({{ app.user.settings.monnaie2.code }})</th>
+                        <th data-field="puconvert" data-align="center" id="head_u_tabmonnaie">Prix unitaire ({{ app.user.settings.monnaie3.code }})</th>
+                    {% endif %}
+                    {% if not op is defined %}
+                        <th data-field="pu" data-align="center">Prix unitaire</th>
+                        <th data-field="mesure" data-align="">Monnaie</th>
+                    {% endif %}
+                    <th data-field="mesure" data-align="">Mesure</th>
+                    {% if op is not defined %}
+                        <th data-field="monnaie" data-align="center">Date d'enregistrement</th>
+                    {% endif %}
+                    {% if op is defined %}
+                        <th data-field="modifier" data-align="">Quantite</th>
+                        <th data-field="modifier" data-align="" id="head_t_tabmonnaie">Prix total ({{ app.user.settings.monnaie1.code }})</th>
+                        <th data-field="modifier" data-align="" id="head_t_tabmonnaie">Prix total ({{ app.user.settings.monnaie2.code }})</th>
+                        <th data-field="modifier" data-align="" id="head_t_tabmonnaie">Prix total ({{ app.user.settings.monnaie3.code }})</th>
+                        <th data-field="responsable" data-align="center">Enregistre par</th>
+                        <th data-field="responsable" data-align="center">Responsable</th>
+                        {% if op == "dep" %}
+                            <th data-field="raison" data-align="center">Raison</th>
+                        {% endif %}
+                    {% endif %}
+                    <th data-field="description" data-align="center">Description</th>
+                    <th data-field="modifier" data-align=""></th>
+                </tr>
+{% endblock %}
+
+
+{% block contenu_body %}
+    {% set total = 0.0 %}
+    {% set total1 = 0.0 %}
+    {% set total2 = 0.0 %}
+    {% set total3 = 0.0 %}
+    {% if datas is defined %}
+    {% if datas |length > 0 %}
+                    {% set ids = [] %}
+                    {% for valeur, data in datas %}
+                        {% if op is defined %}
+                            {% set qte = data.quantite %}
+                            {% set possobj = data %}
+                            {% set data = data.objet %}                            
+                        {% endif %}
+                        {% if data.id is not null %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="check{{ valeur }}" value="{{ data.id }}" id="checkbox{{ valeur }}">
+                                </td>
+                                {% if op is defined %}
+                                    <td>{{ possobj.date | date("d/m/Y") }}</td>
+                                {% endif %}
+                                <td class="text-success">{{ data.nom | capitalize}}</td>
+                                {% if op is defined %}
+                                    <td id="puconvert1{{valeur}}">{{ puconvert1[valeur] | number_format(2, '.', ',') }}</td>
+                                    <td id="puconvert2{{valeur}}">{{ puconvert2[valeur] | number_format(2, '.', ',') }}</td>
+                                    <td id="puconvert3{{valeur}}">{{ puconvert3[valeur] | number_format(2, '.', ',') }}</td>
+                                {% endif %}
+                                {% if op is not defined %}
+                                    <td>{{ data.pu | number_format(2, '.', ',') }}</td>
+                                    <td>{{ data.monnaie.code }}</td>
+                                {% endif %}
+                                <td>{{ data.mesure.code | capitalize }}</td>
+                                {% if op is not defined %}
+                                    <td>{{ data.dateenreg | date("d/m/Y H:i:s") }}</td>
+                                {% endif %}
+                                {% if op is defined %}
+                                    <td>{{ qte }}</td>
+                                    <td class="text-danger">
+                                        {% set ptc = qte * puconvert1[valeur] %}
+                                        {{ ptc | number_format(2, '.', ',') }}
+                                        {% set total1 = total1 + ptc %}
+                                    </td>
+                                    <td class="text-danger">
+                                        {% set ptc = qte * puconvert2[valeur] %}
+                                        {{ ptc | number_format(2, '.', ',') }}
+                                        {% set total2 = total2 + ptc %}
+                                    </td>
+                                    <td class="text-danger">
+                                        {% set ptc = qte * puconvert3[valeur] %}
+                                        {{ ptc | number_format(2, '.', ',') }}
+                                        {% set total3 = total3 + ptc %}
+                                    </td>
+                                    <td>{{ possobj.user.username | capitalize }}</td>
+                                    <td>{{ possobj.responsable }}</td>
+                                    {% if op == "dep" %}
+                                        <td>{{ possobj.raison }}</td>
+                                    {% endif %}
+                                {% endif %}
+                                <td>{{ data.description | slice(0, 30) | capitalize}}</td>
+                                <td>
+                                    {% if op is defined %}
+                                        <a href="{{ path('waza_op_objet_edit', {'id': possobj.id, 'op': op}) }}" id="modifierBtn">
+                                    {% else %}
+                                        <a href="{{ path('waza_objet_edit', {'id':data.id}) }}" id="modifierBtn">
+                                    {% endif %}
+                                        <span class="glyphicon glyphicon-edit" id="iconEdit"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% set nbobj = valeur %}
+                        {% endif %}
+                    {% endfor %}
+                        {% if op is defined %}
+                            <tr>
+                                {% if op is defined %}
+                                    <td data-field="total" class="text-success text-center" colspan="8">
+                                        TOTAL
+                                    </td>
+                                    <td data-field="ptotal" data-align="center" class="text-danger" id="total">
+                                        {{ total1 | number_format(2, '.', ',') }}
+                                    </td>
+                                    <td data-field="ptotal" data-align="center" class="text-danger" id="total">
+                                        {{ total2 | number_format(2, '.', ',') }}
+                                    </td>
+                                    <td data-field="ptotal" data-align="center" class="text-danger" id="total">
+                                        {{ total3 | number_format(2, '.', ',') }}
+                                    </td>
+                                {% endif %}
+                            </tr>                          
+                        {% endif %}
+    {% else %}
+        <tr><td>Aucun Objet</td></tr>
+    {% endif %}
+    {% endif %}    
+{% endblock %}

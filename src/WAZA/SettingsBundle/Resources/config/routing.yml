@@ -1,0 +1,15 @@
+waza_settings_homepage:
+    path:     /
+    defaults: { _controller: WAZASettingsBundle:Default:index }
+    
+waza_settings_user_homepage:
+    path:     /settingsuser/{userid}
+    defaults: { _controller: WAZASettingsBundle:User:show }
+        
+waza_settings_user_save:
+    path:     /settingsuser/save/{userid}
+    defaults: { _controller: WAZASettingsBundle:User:save }
+    
+waza_settings_app_homepage:
+    path:     /appsettings
+    defaults: { _controller: WAZASettingsBundle:App:show }

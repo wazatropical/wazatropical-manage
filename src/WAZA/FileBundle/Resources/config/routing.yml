@@ -1,0 +1,7 @@
+waza_file_homepage:
+    path:     /
+    defaults: { _controller: WAZAFileBundle:Default:index }
+    
+waza_file_export:
+    path: /export/
+    defaults: { _controller: WAZAFileBundle:Export:export }

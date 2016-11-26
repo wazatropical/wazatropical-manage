@@ -1,0 +1,5 @@
+{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {{ form(form) }}
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+{{ form_end(form) }}

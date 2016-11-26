@@ -1,0 +1,54 @@
+{% extends "WAZAComptabiliteBundle:Core:contenu.html.twig" %}
+
+{% block linkbar %}
+    {{ parent()}}<span class="glyphicon glyphicon-chevron-right"></span> <a href="{{ path('waza_gain_list') }}">Producteurs</a>
+{% endblock %}
+
+{% block contenu_head %}
+                <tr>
+                    <th data-field="state" data-checkbox="true"><input type="checkbox" id="checkbox"></th>
+                    <th data-field="nom" data-align="center">NOM</th>
+                    <th data-field="pu" data-align="center">PRENOM</th>
+                    <th data-field="description" data-align="center">EMAIL</th>
+                    <th data-field="monnaie" data-align="center">TELEPHONE</th>
+                    <th data-field="mesure" data-align="">PAYS</th>
+                    <th data-field="mesure" data-align="">CODE POSTAL</th>
+                    <th data-field="mesure" data-align="">VILLE</th>
+                    <th data-field="mesure" data-align="">RUE</th>
+                    <th data-field="monnaie" data-align="center">DATE D'ENREGISTREMENT</th>
+                    <th data-field="modifier" data-align=""></th>
+                </tr>
+{% endblock %}
+
+
+{% block contenu_body %}
+    {% if datas is defined %}
+    {% if datas |length > 0 %}
+                    {% set ids = [] %}
+                    {% for valeur, data in datas %}
+                        <tr>
+                            <td>
+                            <input type="checkbox" name="check{{ valeur }}" value="{{ data.id }}" id="checkbox{{ valeur }}">
+                        </td>
+                        <td>{{ data.nom | capitalize}}</td>
+                        <td>{{ data.prenom }}</td>
+                        <td>{{ data.email }}</td>
+                        <td>{{ data.tel }}</td>
+                        <td>{{ data.pays }}</td>
+                        <td>{{ data.codepostal}}</td>
+                        <td>{{ data.ville }}</td>
+                        <td>{{ data.rue }}</td>
+                        <td>{{ data.dateenreg | date("d/m/Y H:i:s") }}</td>
+                        <td>
+                            <a href="{{ path('waza_producteur_edit', {'id':data.id}) }}" id="modifierBtn">
+                                <span class="glyphicon glyphicon-edit" id="iconEdit"></span>
+                            </a>
+                        </td>
+                        </tr>
+                        {% set nbobj = valeur %}
+                    {% endfor %}
+    {% else %}
+        <tr><td>Aucun Producteur</td></tr>
+    {% endif %}
+    {% endif %}
+{% endblock %}

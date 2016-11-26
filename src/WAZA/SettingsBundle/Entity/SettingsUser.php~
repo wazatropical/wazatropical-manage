@@ -1,0 +1,47 @@
+<?php
+
+namespace WAZA\SettingsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * SettingsUser
+ *
+ * @ORM\Table(name="settings_user")
+ * @ORM\Entity(repositoryClass="WAZA\SettingsBundle\Repository\SettingsUserRepository")
+ */
+class SettingsUser
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="WAZA\FileBundle\Entity\FormatExport")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $formatExpFile; 
+    
+    /**
+     * @ORM\OneToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $monnaie1; 
+    
+    /**
+     * @ORM\OneToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $monnaie2; 
+    
+    /**
+     * @ORM\OneToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $monnaie3;
+}

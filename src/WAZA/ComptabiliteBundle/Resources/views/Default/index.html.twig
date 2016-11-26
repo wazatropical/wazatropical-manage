@@ -1,0 +1,142 @@
+{% extends "WAZAGestionBundle:Default:index.html.twig" %}
+
+{% block title %}{{ parent() }} - Comptabilité{% endblock %}
+{% block body %}
+    <style>
+        .btn-md{
+            size:10px;
+            margin:2px;
+        }
+        
+        aside{
+            padding: 0px;
+            margin-left:-10px;
+        }
+        
+        #toolbar{
+            margin-top: 0px;
+            padding-top: 5px;
+            margin-bottom:5px;
+            height: 53px;
+        }
+    </style>
+    {% block toolbar %}
+        <div id="toolbar" class="row jumbotron">
+            <div class="container">
+                {% if not page is defined %}
+                    <a href="#" class="btn btn-success col-lg-1 btn-md" data-toggle="modal" data-target="#nouveau" id="newBtn">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Nouveau
+                    </a>
+                    <a href="#" class="btn btn-danger col-lg-1 btn-md " data-toggle="modal" data-target="#effacer" id="effacerBtn">
+                        <span class="glyphicon glyphicon glyphicon-trash"></span> Effacer
+                    </a>
+                {% endif %}
+                {% if page is defined %}
+                    <a href="#" class="btn btn-danger col-lg-1 btn-md " data-toggle="modal" data-target="#effacerCurrentProd" id="effacerBtn">
+                        <span class="glyphicon glyphicon glyphicon-trash"></span> Effacer
+                    </a>
+                    <a href="{{ path('waza_file_export') }}" class="btn btn-warning col-lg-1 btn-md" data-toggle="modal" data-target="#export" id="exportBtn">
+                        <span class="glyphicon glyphicon-export"></span> Exporter
+                    </a>
+                    <a href="#" class="btn btn-info col-lg-1 btn-md" data-toggle="modal" data-target="#modifier" id="exportBtn">
+                        <span class="glyphicon glyphicon-export"></span> Modifier
+                    </a>
+                {% endif %}
+                <div class="col-lg-4">
+                    {% block notice %}
+                        
+                    {% endblock %}
+                </div>
+                <form class="navbar-form navbar-right inline-form col-lg-3 btn-md" id="form_recherche">
+                    <div class="form-group">
+                        <input type="search" name="pattern" class="input-sm form-control" placeholder="Rechercher un objet" id="input_recherche">
+                        <button type="submit" class="btn btn-primary btn-sm" id="recherche"><span class="glyphicon glyphicon-eye-open"></span> Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    {% endblock %}
+    
+    <aside>
+        {% block linkbar %}
+            <a href="{{ path('waza_comptabilite_homepage') }}">Accueil</a>
+        {% endblock %}
+        {% block content %}
+            <div class="container">
+                <div class="row">
+                    <img id="logo_image" class="col-lg-3" style="width:25%; display:inline-block;" src="{{ asset('Logo.png') }}"/>
+                    <div class="jumbotron col-lg-9">
+                        <h1 class="text-center">Comptabilite de<br>WAZA Tropical</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <h3><b>Informations sur l'utilisateur connecte</b></h3>
+                    <table class="table table-striped col-lg-6">
+                        <tbody>
+                            <tr>
+                                <td>Username:</td>
+                                <td>{{ app.user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td>Nom:</td>
+                                <td>{{ app.user.nom | upper }}</td>
+                            </tr>
+                            <tr>
+                                <td>Prenom:</td>
+                                <td>{{ app.user.prenom | capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <td>Pays:</td>
+                                <td>{{ app.user.pays | capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <td>Ville:</td>
+                                <td>{{ app.user.ville | capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <td>Code postal:</td>
+                                <td>{{ app.user.codepostal | upper }}</td>
+                            </tr>
+                            <tr>
+                                <td>Rue</td>
+                                <td>{{ app.user.rue | capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <td>Telephone:</td>
+                                <td>{{ app.user.tel }}</td>
+                            </tr>
+                            <tr>
+                                <td>Date d'enregistrement:</td>
+                                <td>{{ app.user.dateenreg | date('d.m.y') }}</td>
+                            </tr>
+                            <tr>
+                                <td>Derniere connexion:</td>
+                                <td>{{ app.user.lastLogin | date('d.m.y') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4><b>Statistiques</b></h4>
+                    <ul class="list-group col-lg-6">
+                        <li class="list-group-item">Nombre d'objet cree: <span class="badge">{{ nbObjUser ~'/'~ nbObjUser }}</span></li>
+                        <li class="list-group-item">Nombre de gain cree: <span class="badge">{{ nbGainjUser ~'/'~ nbGainjUser }}</span></li>
+                        <li class="list-group-item">Nombre d'operation de gain cree: <span class="badge">{{ nbPossederobjgainUser ~'/'~ nbPossederobjgainUser }}</span></li>
+                        <li class="list-group-item">Nombre de depense cree: <span class="badge">{{ nbDepUser ~'/'~ nbDepUser }}</span></li>
+                        <li class="list-group-item">Nombre d'operation de depense cree: <span class="badge">{{ nbPossederobjdepUser ~'/'~ nbPossederobjdepUser }}</span></li>
+                        <li class="list-group-item">Nombre de producteur cree: <span class="badge">{{ nbProducteurUser ~'/'~ nbProducteurUser }}</span></li>
+                        <li class="list-group-item">Nombre de production cree: <span class="badge">{{ nbProductionUser ~'/'~ nbProductionUser }}</span></li>
+                        <li class="list-group-item">Nombre de production active cree: <span class="badge">{{ nbProductionActUser ~'/'~ nbProductionActUser }}</span></li>
+                        <li class="list-group-item">Nombre de production inactive cree: <span class="badge">{{ nbProductionInUser ~'/'~ nbProductionInUser }}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <script>
+                var toolbar = document.getElementById('toolbar');
+                toolbar.style.visibility = 'hidden';
+            </script>
+        {% endblock %}
+    </aside>
+    <script>
+        
+    </script>    
+{% endblock %}

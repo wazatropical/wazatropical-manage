@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/css/bootstrap-select.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/bootstrap-select.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/i18n/defaults-*.min.js"></script>
+            <script src="//code.highcharts.com/4.1.8/highcharts.js"></script>
+            <script src="//code.highcharts.com/4.1.8/modules/exporting.js"></script>
+
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <link href="template_index.css" rel="stylesheet">
+            <title>{% block title %}Gestion Waza{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        <style>
+            #corps{
+                border-bottom: 1px solid #eeeeee;
+            }
+            
+            #logo_image{
+                width: 51px;
+                margin-top:-16px;
+            }
+            
+            nav{
+                padding-top:51px;
+            }
+            
+            section{
+                border-left: 1px solid #eeeeee;
+                padding-top:51px;
+            }
+        </style>
+        <header class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="http://www.wazatropical.com"><img id="logo_image" src="{{ asset('Logo.png') }}"/></a>
+                </div>
+                <ul class="nav navbar-nav">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li class="dropdown"><a class="dropdown-toogle" data-toggle="dropdown" href="#">
+                            Connecté en tant que {{ app.user.username | capitalize }}
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('waza_settings_user_homepage', {'userid': app.user.id}) }}">Parametres</a></li>
+                                <li><a href="{{ path('fos_user_profile_edit') }}">Profil</a></li>
+                                <li><a href="{{ path('fos_user_change_password') }}">Mot de passe</a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                    {% endif %}
+                    <li><a href="{{ path("waza_comptabilite_homepage") }}">Accueil</a></li>
+                    <li><a href="{{ path("waza_production_list") }}">Production</a></li>
+                    <li class="dropdown"><a class="dropdown-toogle" data-toggle="dropdown" href="#">Operations
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path("waza_gain_list") }}">Gains</a></li>
+                            <li><a href="{{ path("waza_dep_list") }}">Depenses</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a class="dropdown-toogle" data-toggle="dropdown" href="#">Contenu
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path("waza_producteur_list") }}">Producteur</a></li>
+                            <li><a href="{{ path("waza_objet_list") }}">Objet</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a class="dropdown-toogle" data-toggle="dropdown" href="#">Mise a jour
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Sauvegarder les donnees</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Utilisateurs</a></li>
+                    <li><a href="{{ path('waza_settings_app_homepage') }}">Paramètres</a></li>
+                </ul>
+                <form class="navbar-form navbar-right inline-form">
+                    <div class="form-group">
+                        <input type="search" class="input-sm form-control" placeholder="Rechercher globalement">
+                        <button type="submit" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-eye-open"></span> Search</button>
+                    </div>
+                </form>
+            </div>
+        </header>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Informations</h4>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <p>Modification effectue avec succes</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="row" id="corps">
+            <nav class="col-lg-2">
+
+                {% block nav %}
+
+                {% endblock %}
+            </nav>
+            <section class="col-lg-10">      
+                {% block body %}
+                    
+                {% endblock %}
+            </section>
+        </div>
+    </body>              
+    <script>
+        $(window).load(function(){
+            {% for message in app.session.flashbag.get('notice') %}
+                $('#myModal').modal('show');
+            {% endfor %}
+        });
+    </script>
+</html>

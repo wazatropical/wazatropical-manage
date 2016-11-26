@@ -1,0 +1,11 @@
+services:
+#    waza_comptabilite.example:
+#        class: WAZA\ComptabiliteBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+    waza_comptabilite.change:
+        class: WAZA\ComptabiliteBundle\Change\WAZAChange     
+    
+    waza_comptabilite.twig_extension:
+        class: WAZA\ComptabiliteBundle\Twig\Extension\ShowTabProdObjectExtension
+        tags:
+            - { name: twig.extension }

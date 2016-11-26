@@ -1,0 +1,258 @@
+{% extends "WAZAComptabiliteBundle:Default:index.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ titre | capitalize }}{% endblock %}
+
+{% block content %}
+    {% set src_path = src %}
+    {% if src == 'op_objet' %}
+        {% set src_path = 'operation' %}
+    {% endif %}
+    <style>
+        .modal-header, h4, .close {
+            background-color: #5cb85c;
+            color:white !important;
+            text-align: center;
+            font-size: 30px;
+        }
+        .modal-footer {
+            background-color: #f9f9f9;
+        }
+        .tool-bar-content{
+            line-height: 10px;
+        }
+        
+        #swap{
+            visibility: hidden;
+        }
+  </style>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+  
+            {% block notice %}
+                {% set show = false %}
+                {% for message in app.session.flashbag.get('notice') %}
+		{% if show == false %}
+                    <div class="alert alert-success alert-dismissable text-center col-lg-12" style="height:25px;">
+                        <button type="button" class="close col-lg-2" data-dismiss="alert">&times;</button>
+                        <strong class="col-lg-10">{{ message }}</strong>
+                    </div>
+		{% endif %}
+		{% set show = true %}
+	{% endfor %}
+        {% endblock %}
+        <div class="container">
+            {% block toolbarmenu %}
+                
+            {% endblock %}
+        </div>
+    <div class="container">
+        <div class="panel-heading">
+            <h1>{{ titre | capitalize }}
+                {% if src != 'objet' %}
+                    {% if id is defined and modal == true %}
+                        <span id="swap">{{ id }}</span>
+                    {% else %}
+                        <span id="swap"></span>
+                    {% endif %}
+                {% else %}
+                    {% if id is defined %}
+                        <span id="swap">{{ id }}</span>
+                    {% else %}
+                        <span id="swap"></span>
+                    {% endif %}
+                {% endif %}
+            </h1>
+        </div>
+            <table class="table table-striped table-bordered table-condensed table-hover" data-url="data1.json" data-height="299" data-click-to-select="true">
+                <thead>
+                {% block contenu_head %}
+
+                {% endblock %}
+                </thead>
+                <tbody>
+                    {% set nbobj = 0 %}
+                {% block contenu_body %}
+
+                {% endblock %}
+                </tbody>
+            </table>
+            
+            {% block contenu_production %}
+                
+            {% endblock %}
+    </div>
+
+        
+<div  style="display: none;"  class="modal fade" id="nouveau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {% if src == 'op_objet' %}
+                        {% if op == 'gain' %}
+                            {{ 'Nouveau '~op | capitalize }}
+                        {% else %}
+                            {{ 'Nouvelle '~op | capitalize }}
+                        {% endif %}
+                    {% else%}
+                        {% if src == 'objet' %}
+                            {{ 'Nouvel '~src | capitalize }}
+                        {% else %}
+                            {{ 'Nouveau '~src | capitalize }}
+                        {% endif %}
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="modal-body">
+                {% if not op is defined %}
+                    <form class="form" method="POST" action="{{ path('waza_'~ src ~'_add') }}">
+                    {% if src == "prod_op" %}
+                        {{ render(controller('WAZAComptabiliteBundle:Detail:addOp')) }}
+                    {% else %}
+                        {{ render(controller('WAZAComptabiliteBundle:'~ src_path | capitalize ~':add'~src | capitalize)) }}
+                    {% endif %}
+                {% else %}
+                    <form class="form" method="POST" action="{{ path('waza_'~ src ~'_add', {'id':id, 'op': op}) }}">
+                    {{ render(controller('WAZAComptabiliteBundle:'~ src_path | capitalize ~':addObjet', {'id':id, 'op': op})) }}
+                {% endif %}
+                </form>
+             </div>
+             <div class="modal-footer">
+                 
+             </div>
+         </div>
+     </div>
+</div>              
+                        
+<div  class="modal fade" id="modifier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Modifier un {{ src }}</h4>
+            </div>
+            <div class="modal-body">
+                {% if not op is defined and src != "prod_op" %}
+                    {% if id is defined  %}
+                        <form id="form_edit" class="form" method="POST" action="{{ path('waza_'~src~'_edit', {'id': id }) }}">
+                            {{ form(formEdit) }}
+                    {% else %}
+                        <form id="form_edit" class="form" method="POST" action="{{ path('waza_'~src~'_edit', {'id': 0 }) }}">
+                    {% endif %}
+                {% else %}
+                    {% if id is defined  %}
+                        {% if formEdit is defined %}
+                            <form id="form_edit" class="form" method="POST" action="{{ path('waza_'~src~'_edit', {'id': id, 'op': op }) }}">
+                                {{ form(formEdit) }}
+                        {% endif %}
+                    {% else %}
+                        <form id="form_edit" class="form" method="POST" action="{{ path('waza_'~src~'_edit', {'id': 0, 'op': op }) }}">
+                    {% endif %}
+                {% endif %}
+                </form>
+             </div>
+             <div class="modal-footer">
+                 
+             </div>
+         </div>
+     </div>
+</div>
+
+                
+<div  style="display: none;"  class="modal fade" id="effacer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Effacer des {{ src~'s' }}</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form_delete" class="form" method="POST">
+                        <h3 id="confirm"></h3>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
+                        <button type="submit" class="btn btn-primary" id="effaSubmit">Oui</button>
+                </form>
+             </div>
+             <div class="modal-footer">
+             </div>
+         </div>
+     </div>
+ </div>  
+                
+                <script>
+                    var suppBtn = document.getElementById('effacerBtn'), cpt, 
+                             modifierBtn = document.getElementById('modifierBtn'),
+                             form_edit = document.getElementById('form_edit'),
+                            form = document.getElementById("form_delete"),
+                            ids = new Array(), elem,
+                            confirm = document.getElementById('confirm');
+                                var effaSubmit = document.getElementById('effaSubmit');
+                                
+                                
+                                {% if datas is defined %}
+                                        suppBtn.addEventListener('click', function(){
+                                            cpt = 0;
+                                                for(var i = 0; i < {{ datas | length }}; i++){
+                                                    elem = document.getElementById("checkbox" + i);
+                                                    if(elem.checked == true){
+                                                        cpt = cpt + 1;
+                                                        ids.push(elem.value);
+                                                    }
+                                                }
+                                            if(cpt != 0){
+                                                confirm.innerHTML = "Etes-vous sure de vouloir supprimer ces {{ src }}s(<span class=\"badge\" id=\"badge_supprim\"></span>)";
+                                                {% if op is defined %}
+                                                    var route = Routing.generate('waza_{{ src }}_delete', {'ids':ids, 'id':{{ id | json_encode | raw }}, 'op': {{ op | json_encode | raw }}});
+                                                {% else %}
+                                                    var route = Routing.generate('waza_{{ src }}_delete', {'ids':ids});
+                                                {% endif %}
+                                                var badge = document.getElementById('badge_supprim');
+                                                effaSubmit.style.visility = 'visible';
+                                                form.action = route;
+                                                badge.innerHTML = cpt;
+                                            }else{
+                                                effaSubmit.style.visility = 'hidden';
+                                                confirm.innerHTML = "Aucun {{ src }} selectionne";
+                                            }
+                                    }, false);
+
+
+                                    var checkbox = document.getElementById('checkbox');
+                                    checkbox.addEventListener('change', function(){
+                                        if(this.checked == true){
+                                            for(var i = 0; i <= {{ datas | length }}; i++){
+                                                    elem = document.getElementById("checkbox" + i);
+                                                    elem.checked = true;
+                                                }
+                                        }else{                            
+                                            for(var i = 0; i <= {{ datas | length }}; i++){
+                                                    elem = document.getElementById("checkbox" + i);
+                                                    elem.checked = false;
+                                                }
+                                        }
+                                    }, false);
+                    {% endif %}
+                
+                
+                
+                    var editAll = document.querySelectorAll('a #iconEdit');
+                    for(var t = 0; t < editAll.length; t++){
+                        editAll[t].addEventListener('click', function(){
+                            var rout = Routing.generate('waza_{{ src }}_add', {'src': 'edit'});
+                        }, false);
+                    }
+                    
+                    $(window).load(function(){
+                        var swap = document.getElementById('swap');
+                        if(swap.innerHTML != "")
+                            $('#modifier').modal('show');
+                    });
+                    
+                    var form_recherche = document.getElementById('form_recherche'),
+                        recherche = document.getElementById('recherche');
+                        recherche.addEventListener('click', function(){
+                            form_recherche.action = Routing.generate('waza_{{ src }}_search');
+                        }, false);
+                </script>
+{% endblock %}

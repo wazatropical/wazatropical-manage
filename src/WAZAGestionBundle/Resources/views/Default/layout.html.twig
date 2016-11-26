@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/css/bootstrap-select.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/bootstrap-select.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/i18n/defaults-*.min.js"></script>
+            <script src="//code.highcharts.com/4.1.8/highcharts.js"></script>
+            <script src="//code.highcharts.com/4.1.8/modules/exporting.js"></script>
+
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <link href="template_index.css" rel="stylesheet">
+            <title>{% block title %}Gestion Waza{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        <style>
+            #corps{
+            }
+            
+            section{
+                border-left: 1px solid #eeeeee;
+                padding-top:51px;
+            }
+        </style>
+        <div class="row" id="corps">
+            <section class="col-lg-10">
+                {% block body %}
+                    
+                {% endblock %}
+            </section>
+        </div>
+    </body>
+</html>

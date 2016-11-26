@@ -1,0 +1,96 @@
+{% extends "WAZAGestionBundle:Default:index.html.twig" %}
+{% block body %}
+    <style>
+        fieldset{
+            margin-bottom:30px;
+        }
+        
+        fieldset div{
+            margin-left:30px;
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <h1 class="col-lg-4 text-warning">Profil utilisateur</h1>
+        </div>
+        <div class="col-lg-8">
+            {% trans_default_domain 'FOSUserBundle' %}
+            {{form_start(form, {'method': 'POST', 'action': path('fos_user_profile_edit'), 'attr':{'class': 'profile'}})}}
+            <fieldset><legend>Informations personnelles</legend>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.nom) }}
+                        {{ form_widget(form.nom, {value: app.user.nom}) }}
+                    </div>
+                    {{ form_errors(form.nom) }}
+                </div>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.prenom) }}
+                        {{ form_widget(form.prenom, {value: app.user.prenom}) }}
+                    </div>
+                    {{ form_errors(form.prenom) }}
+                </div>
+            </fieldset>
+            <fieldset><legend>Coordonnees</legend>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.pays) }}
+                        {{ form_widget(form.pays, {value: app.user.pays}) }}
+                    </div>
+                    {{ form_errors(form.pays) }}
+                </div>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.codepostal) }}
+                        {{ form_widget(form.codepostal, {value: app.user.codepostal}) }}
+                    </div>
+                    {{ form_errors(form.username) }}
+                </div>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.ville) }}
+                        {{ form_widget(form.ville, {value: app.user.ville}) }}
+                    </div>
+                    {{ form_errors(form.username) }}
+                </div>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.rue) }}
+                        {{ form_widget(form.rue, {value: app.user.rue}) }}
+                    </div>
+                    {{ form_errors(form.username) }}
+                </div>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.tel) }}
+                        {{ form_widget(form.tel, {value: app.user.tel}) }}
+                    </div>
+                    {{ form_errors(form.username) }}
+                </div>
+                <div class="row no-padding">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email, {value: app.user.email}) }}
+                    </div>
+                    {{ form_errors(form.email) }}
+                </div>
+            </fieldset>
+            <fieldset><legend>Coordonnees utilisateur</legend>
+                <div class="row">
+                    <div class="input-field col-lg-12">
+                        {{ form_label(form.username) }}
+                        {{ form_widget(form.username, {value: app.user.username}) }}
+                    </div>
+                    {{ form_errors(form.username) }}
+                </div>
+            </fieldset>
+            <div class="row">
+                <button style="margin:10px;" type="submit" name="action" class="btn btn-success col-lg-2 btn-md" data-toggle="modal" data-target="#modifier" id="exportBtn">
+                            <span class="glyphicon glyphicon-edit"></span> Modifier
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

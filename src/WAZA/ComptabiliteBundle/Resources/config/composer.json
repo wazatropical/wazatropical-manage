@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ob/highcharts-bundle": "^1.5"
+    }
+}

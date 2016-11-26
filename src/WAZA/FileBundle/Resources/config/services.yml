@@ -1,0 +1,4 @@
+services:
+#    waza_file.example:
+#        class: WAZA\FileBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

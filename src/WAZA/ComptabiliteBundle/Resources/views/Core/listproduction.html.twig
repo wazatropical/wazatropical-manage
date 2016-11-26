@@ -1,0 +1,51 @@
+{% extends "WAZAComptabiliteBundle:Core:contenu.html.twig" %}
+
+{% block contenu_head %}
+                <tr>
+                    <th data-field="state" data-checkbox="true"><input type="checkbox" id="checkbox"></th>
+                    <th data-field="nom" data-align="center">NOM</th>
+                    <th data-field="datedebut" data-align="">DATE DE DEBUT</th>
+                    <th data-field="dateenreg" data-align="">DATE D'ENREGISTREMENT</th>
+                    <th data-field="description" data-align="">DESCRIPTION</th>
+                    <th data-field="etat" data-align="center">ETAT</th>
+                    <th data-field="modifier" data-align=""></th>
+                </tr>
+{% endblock %}
+
+{% block linkbar %}
+    {{ parent()}}<span class="glyphicon glyphicon-chevron-right"></span> <a href="{{ path('waza_production_list') }}">Productions</a>
+{% endblock %}
+
+{% block contenu_body %}
+    {% if datas is defined %}
+    {% if datas |length > 0 %}
+                    {% set ids = [] %}
+                    {% for valeur, data in datas %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="check{{ valeur }}" value="{{ data.id }}" id="checkbox{{ valeur }}">
+                            </td>
+                            <td><a href="{{ path('waza_prod_op_list', {'id': data.id}) }}">{{ data.nom | capitalize}}</a></td>
+                            <td><a href="{{ path('waza_prod_op_list', {'id': data.id}) }}">{{ data.datedebut | date("d/m/Y") }}</a></td>
+                            <td><a href="{{ path('waza_prod_op_list', {'id': data.id}) }}">{{ data.dateenreg | date("d/m/Y H:i:s") }}</a></td>
+                            <td><a href="{{ path('waza_prod_op_list', {'id': data.id}) }}">{{ data.description }}</a></td>
+                            <td class="text-center">
+                                {% if data.etat == 1 %}
+                                    <span class="glyphicon glyphicon-ok text-success" id="etatactif"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-remove text-danger" id="etatinactif"></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('waza_production_edit', {'id':data.id}) }}" id="modifierBtn">
+                                    <span class="glyphicon glyphicon-edit" id="iconEdit"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% set nbobj = valeur %}
+                    {% endfor %}
+    {% else %}
+        <tr><td>Aucune production</td></tr>
+    {% endif %}
+    {% endif %}
+{% endblock %}

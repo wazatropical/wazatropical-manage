@@ -1,0 +1,480 @@
+<?php
+
+namespace WAZA\ComptabiliteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+/**
+ * production
+ *
+ * @ORM\Table(name="production")
+ * @ORM\Entity(repositoryClass="WAZA\ComptabiliteBundle\Repository\productionRepository")
+ */
+class Production
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+    
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Producteur", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $producteur;
+    
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Gain", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $gain;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Depense", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $depense;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="budget", type="decimal", precision=10, scale=2)
+     */
+    private $budget;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $monnaie;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="beneficev", type="decimal", precision=10, scale=2)
+     */
+    private $beneficev;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="etat", type="boolean", nullable=true)
+     */
+    private $etat;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datedebut", type="datetime")
+     */
+    private $datedebut;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datefinv", type="datetime", nullable=true)
+     */
+    private $datefinv;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="datefin", type="datetime", nullable=true)
+     */
+    private $datefin;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateenreg", type="datetime", nullable=false)
+     */
+    private $dateenreg;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="WAZA\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $user;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Production
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set budget
+     *
+     * @param string $budget
+     *
+     * @return Production
+     */
+    public function setBudget($budget)
+    {
+        $this->budget = $budget;
+
+        return $this;
+    }
+
+    /**
+     * Get budget
+     *
+     * @return string
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * Set beneficev
+     *
+     * @param string $beneficev
+     *
+     * @return Production
+     */
+    public function setBeneficev($beneficev)
+    {
+        $this->beneficev = $beneficev;
+
+        return $this;
+    }
+
+    /**
+     * Get beneficev
+     *
+     * @return string
+     */
+    public function getBeneficev()
+    {
+        return $this->beneficev;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param boolean $etat
+     *
+     * @return Production
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * Get etat
+     *
+     * @return boolean
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * Set datedebut
+     *
+     * @param \DateTime $datedebut
+     *
+     * @return Production
+     */
+    public function setDatedebut($datedebut)
+    {
+        $this->datedebut = $datedebut;
+
+        return $this;
+    }
+
+    /**
+     * Get datedebut
+     *
+     * @return \DateTime
+     */
+    public function getDatedebut()
+    {
+        return $this->datedebut;
+    }
+
+    /**
+     * Set datefinv
+     *
+     * @param \DateTime $datefinv
+     *
+     * @return Production
+     */
+    public function setDatefinv($datefinv)
+    {
+        $this->datefinv = $datefinv;
+
+        return $this;
+    }
+
+    /**
+     * Get datefinv
+     *
+     * @return \DateTime
+     */
+    public function getDatefinv()
+    {
+        return $this->datefinv;
+    }
+
+    /**
+     * Set datefin
+     *
+     * @param \DateTime $datefin
+     *
+     * @return Production
+     */
+    public function setDatefin($datefin)
+    {
+        $this->datefin = $datefin;
+
+        return $this;
+    }
+
+    /**
+     * Get datefin
+     *
+     * @return \DateTime
+     */
+    public function getDatefin()
+    {
+        return $this->datefin;
+    }
+
+    /**
+     * Set dateenreg
+     *
+     * @param \DateTime $dateenreg
+     *
+     * @return Production
+     */
+    public function setDateenreg($dateenreg)
+    {
+        $this->dateenreg = $dateenreg;
+
+        return $this;
+    }
+
+    /**
+     * Get dateenreg
+     *
+     * @return \DateTime
+     */
+    public function getDateenreg()
+    {
+        return $this->dateenreg;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Production
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set producteur
+     *
+     * @param \WAZA\ComptabiliteBundle\Entity\Producteur $producteur
+     *
+     * @return Production
+     */
+    public function setProducteur(\WAZA\ComptabiliteBundle\Entity\Producteur $producteur = null)
+    {
+        $this->producteur = $producteur;
+
+        return $this;
+    }
+
+    /**
+     * Get producteur
+     *
+     * @return \WAZA\ComptabiliteBundle\Entity\Producteur
+     */
+    public function getProducteur()
+    {
+        return $this->producteur;
+    }
+
+    /**
+     * Set gain
+     *
+     * @param \WAZA\ComptabiliteBundle\Entity\Gain $gain
+     *
+     * @return Production
+     */
+    public function setGain(\WAZA\ComptabiliteBundle\Entity\Gain $gain = null)
+    {
+        $this->gain = $gain;
+
+        return $this;
+    }
+
+    /**
+     * Get gain
+     *
+     * @return \WAZA\ComptabiliteBundle\Entity\Gain
+     */
+    public function getGain()
+    {
+        return $this->gain;
+    }
+
+    /**
+     * Set depense
+     *
+     * @param \WAZA\ComptabiliteBundle\Entity\Depense $depense
+     *
+     * @return Production
+     */
+    public function setDepense(\WAZA\ComptabiliteBundle\Entity\Depense $depense = null)
+    {
+        $this->depense = $depense;
+
+        return $this;
+    }
+
+    /**
+     * Get depense
+     *
+     * @return \WAZA\ComptabiliteBundle\Entity\Depense
+     */
+    public function getDepense()
+    {
+        return $this->depense;
+    }
+
+    /**
+     * Set monnaie
+     *
+     * @param \WAZA\ComptabiliteBundle\Entity\Monnaie $monnaie
+     *
+     * @return Production
+     */
+    public function setMonnaie(\WAZA\ComptabiliteBundle\Entity\Monnaie $monnaie)
+    {
+        $this->monnaie = $monnaie;
+
+        return $this;
+    }
+
+    /**
+     * Get monnaie
+     *
+     * @return \WAZA\ComptabiliteBundle\Entity\Monnaie
+     */
+    public function getMonnaie()
+    {
+        return $this->monnaie;
+    }
+   
+    /**
+     * @Assert\Callback
+     */
+    /* public function validate(ExecutionContextInterface $context, $payload){
+        if($this->datedebut->getTimestamp() > $this->datefinv->getTimestamp()){
+            $context->buildViolation('La date de debut ne peut etre apres la date de fin')
+                ->atPath('datedebut')
+                ->atPath('datefinv')
+                ->addViolation();
+        }
+    }*/
+
+    /**
+     * Set user
+     *
+     * @param \WAZA\UserBundle\Entity\User $user
+     *
+     * @return Production
+     */
+    public function setUser(\WAZA\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \WAZA\UserBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+}
