@@ -80,7 +80,7 @@ class User extends BaseUser
     
     /**
      * @ORM\OneToOne(targetEntity="WAZA\SettingsBundle\Entity\SettingsUser")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $settings; 
     
@@ -274,5 +274,29 @@ class User extends BaseUser
     public function getDateenreg()
     {
         return $this->dateenreg;
+    }
+
+    /**
+     * Set settings
+     *
+     * @param \WAZA\SettingsBundle\Entity\SettingsUser $settings
+     *
+     * @return User
+     */
+    public function setSettings(\WAZA\SettingsBundle\Entity\SettingsUser $settings)
+    {
+        $this->settings = $settings;
+
+        return $this;
+    }
+
+    /**
+     * Get settings
+     *
+     * @return \WAZA\SettingsBundle\Entity\SettingsUser
+     */
+    public function getSettings()
+    {
+        return $this->settings;
     }
 }

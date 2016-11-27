@@ -39,6 +39,10 @@
                     <td>{{ convertbudget | number_format(2, '.', ',')}} {{ app.user.settings.monnaie1.code }}</td>
                   </tr>
                   <tr>
+                    <td>Producteur</td>
+                    <td>{{ datas.producteur.prenom ~ " " ~datas.producteur.nom | title }}</td>
+                  </tr>
+                  <tr>
                     <td>Description</td>
                     <td>{{ datas.description }}</td>
                   </tr>
@@ -158,15 +162,16 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>                             
+                    </div>
                     <div class="row">
                         <script type="text/javascript">
                             {{ chart(chartGainJour) }}
                             {{ chart(chartGainMois) }}
                             {{ chart(chartGainAnnee) }}
                         </script>
-                        <div id="linechart1" class="col-lg-6"> </div>
-                        <div id="linechart2" class="col-lg-6"> </div>
+                        <div id="linechart1" class="col-lg-4"> </div>
+                        <div id="linechart2" class="col-lg-4"> </div>
+                        <div id="linechart3" class="col-lg-4"> </div>
                     </div>
                 </div>
                 <div id="depense" class="tab-pane fade in active container">
@@ -218,8 +223,9 @@
                             {{ chart(chartDepMois) }}
                             {{ chart(chartDepAnnee) }}
                         </script>
-                        <div id="linechart3" class="col-lg-6"> </div>
-                        <div id="linechart4" class="col-lg-6"> </div>
+                        <div id="linechart4" class="col-lg-4"> </div>
+                        <div id="linechart5" class="col-lg-4"> </div>
+                        <div id="linechart6" class="col-lg-4"> </div>
                     </div>
                 </div>
                 <div id="visualisation" class="tab-pane fade in active container">
@@ -229,8 +235,9 @@
                         {{ chart(chartCompMois) }}
                         {{ chart(chartCompAnnee) }}
                     </script>
-                    <div id="linechart5" class="col-lg-6"> </div>
-                    <div id="linechart6" class="col-lg-6"> </div>
+                    <div id="linechart7" class="col-lg-4"> </div>
+                    <div id="linechart8" class="col-lg-4"> </div>
+                    <div id="linechart9" class="col-lg-4"> </div>
                 </div>
             </div>
         </div>

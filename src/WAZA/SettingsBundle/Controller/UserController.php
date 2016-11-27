@@ -55,9 +55,9 @@ class UserController extends Controller
             return $this->redirectToRoute('waza_settings_user_homepage', array('userid' => $userid));
         }
         
-        $repositorySettings = $this->getDoctrine()
+        $repositoryUser = $this->getDoctrine()
                                 ->getManager()
-                                ->getRepository('WAZASettingsBundle:SettingsUser');
+                                ->getRepository('WAZAUserBundle:User');
         
         $repositoryMonnaie = $this->getDoctrine()
                                 ->getManager()
@@ -70,12 +70,13 @@ class UserController extends Controller
         $monnaie2 = $repositoryMonnaie->find($idMonnaie2);
         $monnaie3 = $repositoryMonnaie->find($idMonnaie3);
         $extension = $repositoryFile->find($idExtension);
+	//return new Response($userid);
         
-        $settings = $repositorySettings->find($userid);
-        $settings->setFormatExpFile($extension);
-        $settings->setMonnaie1($monnaie1);
-        $settings->setMonnaie2($monnaie2);
-        $settings->setMonnaie3($monnaie3);
+        $user = $repositoryUser->find($userid);
+        $user->getSettings()->setFormatExpFile($extension);
+        $user->getSettings()->setMonnaie1($monnaie1);
+        $user->getSettings()->setMonnaie2($monnaie2);
+        $user->getSettings()->setMonnaie3($monnaie3);
         
         $em = $this->getDoctrine()->getManager();
         $em->flush();

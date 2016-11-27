@@ -76,7 +76,7 @@
                         <tbody>
                             <tr>
                                 <td>Username:</td>
-                                <td>{{ app.user.username }}</td>
+                                <td>{{ app.user.username | capitalize }}</td>
                             </tr>
                             <tr>
                                 <td>Nom:</td>
@@ -84,7 +84,7 @@
                             </tr>
                             <tr>
                                 <td>Prenom:</td>
-                                <td>{{ app.user.prenom | capitalize }}</td>
+                                <td>{{ app.user.prenom | title }}</td>
                             </tr>
                             <tr>
                                 <td>Pays:</td>
@@ -118,15 +118,15 @@
                     </table>
                     <h4><b>Statistiques</b></h4>
                     <ul class="list-group col-lg-6">
-                        <li class="list-group-item">Nombre d'objet cree: <span class="badge">{{ nbObjUser ~'/'~ nbObjUser }}</span></li>
-                        <li class="list-group-item">Nombre de gain cree: <span class="badge">{{ nbGainjUser ~'/'~ nbGainjUser }}</span></li>
-                        <li class="list-group-item">Nombre d'operation de gain cree: <span class="badge">{{ nbPossederobjgainUser ~'/'~ nbPossederobjgainUser }}</span></li>
-                        <li class="list-group-item">Nombre de depense cree: <span class="badge">{{ nbDepUser ~'/'~ nbDepUser }}</span></li>
-                        <li class="list-group-item">Nombre d'operation de depense cree: <span class="badge">{{ nbPossederobjdepUser ~'/'~ nbPossederobjdepUser }}</span></li>
-                        <li class="list-group-item">Nombre de producteur cree: <span class="badge">{{ nbProducteurUser ~'/'~ nbProducteurUser }}</span></li>
-                        <li class="list-group-item">Nombre de production cree: <span class="badge">{{ nbProductionUser ~'/'~ nbProductionUser }}</span></li>
-                        <li class="list-group-item">Nombre de production active cree: <span class="badge">{{ nbProductionActUser ~'/'~ nbProductionActUser }}</span></li>
-                        <li class="list-group-item">Nombre de production inactive cree: <span class="badge">{{ nbProductionInUser ~'/'~ nbProductionInUser }}</span></li>
+                        <li class="list-group-item">Nombre d'objet cree: <span class="badge">{{ nbObjUser ~'/'~ nbObjUserT }}</span></li>
+                        <li class="list-group-item">Nombre de gain cree: <span class="badge">{{ nbGainjUser ~'/'~ nbGainjUserT }}</span></li>
+                        <li class="list-group-item">Nombre d'operation de gain cree: <span class="badge">{{ nbPossederobjgainUser ~'/'~ nbPossederobjgainUserT }}</span></li>
+                        <li class="list-group-item">Nombre de depense cree: <span class="badge">{{ nbDepUser ~'/'~ nbDepUserT }}</span></li>
+                        <li class="list-group-item">Nombre d'operation de depense cree: <span class="badge">{{ nbPossederobjdepUser ~'/'~ nbPossederobjdepUserT }}</span></li>
+                        <li class="list-group-item">Nombre de producteur cree: <span class="badge">{{ nbProducteurUser ~'/'~ nbProducteurUserT }}</span></li>
+                        <li class="list-group-item">Nombre de production cree: <span class="badge">{{ nbProductionUser ~'/'~ nbProductionUserT }}</span></li>
+                        <li class="list-group-item">Nombre de production active cree: <span class="badge">{{ nbProductionActUser ~'/'~ nbProductionActUserT }}</span></li>
+                        <li class="list-group-item">Nombre de production inactive cree: <span class="badge">{{ nbProductionInUser ~'/'~ nbProductionInUserT }}</span></li>
                     </ul>
                 </div>
             </div>

@@ -79,8 +79,8 @@ class User extends BaseUser
     protected $dateenreg;
     
     /**
-     * @ORM\OneToOne(targetEntity="WAZA\SettingsBundle\Entity\SettingsUser")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="WAZA\SettingsBundle\Entity\SettingsUser")
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $settings; 
     

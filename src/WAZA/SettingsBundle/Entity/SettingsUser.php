@@ -22,26 +22,26 @@ class SettingsUser
     private $id;
     
     /**
-     * @ORM\OneToOne(targetEntity="WAZA\FileBundle\Entity\FormatExport")
+     * @ORM\ManyToOne(targetEntity="WAZA\FileBundle\Entity\FormatExport")
      * @ORM\JoinColumn(nullable=false)
      */
     private $formatExpFile; 
     
     /**
-     * @ORM\OneToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $monnaie1; 
     
     /**
-     * @ORM\OneToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $monnaie2; 
     
     /**
-     * @ORM\OneToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="WAZA\ComptabiliteBundle\Entity\Monnaie")
+     * @ORM\JoinColumn(nullable=false, unique=false)
      */
     private $monnaie3;
 
