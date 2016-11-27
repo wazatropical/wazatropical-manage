@@ -201,7 +201,7 @@ class DetailController extends Controller
                     $totaljour += $pt;
                 }else{
                     $datasjour[] = $totaljour;
-                    $labelsjour[] = $object[$i - 1]->getDate()->format('d')." ".$object[$i - 1]->getDate()->format('m')." ".$object[$i - 1]->getDate()->format('Y');
+                    $labelsjour[] = $object[$i - 1]->getDate()->format('d').".".$object[$i - 1]->getDate()->format('m').".".$object[$i - 1]->getDate()->format('Y');
                     $jour = $o->getDate()->format('d');
                     $anneebis = $o->getDate()->format('Y');
                     $totaljour = $pt;
@@ -220,7 +220,7 @@ class DetailController extends Controller
             
             if($jour == $object[sizeof($object) - 1]->getDate()->format('d') AND $mois == $object[sizeof($object) - 1]->getDate()->format('m') AND ($anneebis == $object[sizeof($object) - 1]->getDate()->format('Y'))){
                 $datasjour[] = $totaljour;
-                $labelsjour[] = $object[$i - 1]->getDate()->format('d')." ".$object[$i - 1]->getDate()->format('m')." ".$object[$i - 1]->getDate()->format('Y');
+                $labelsjour[] = $object[$i - 1]->getDate()->format('d').".".$object[$i - 1]->getDate()->format('m').".".$object[$i - 1]->getDate()->format('Y');
             }
 
             $dataChart->setDatasmois($datasjour);
