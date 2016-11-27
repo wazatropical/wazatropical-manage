@@ -161,6 +161,7 @@
                     </div>                             
                     <div class="row">
                         <script type="text/javascript">
+                            {{ chart(chartGainJour) }}
                             {{ chart(chartGainMois) }}
                             {{ chart(chartGainAnnee) }}
                         </script>
@@ -213,6 +214,7 @@
                     </div>
                     <div class="row">
                         <script type="text/javascript">
+                            {{ chart(chartDepJour) }}
                             {{ chart(chartDepMois) }}
                             {{ chart(chartDepAnnee) }}
                         </script>
@@ -223,6 +225,7 @@
                 <div id="visualisation" class="tab-pane fade in active container">
                     <h3>Visualisation globale</h3>                
                     <script type="text/javascript">
+                        {{ chart(chartCompJour) }}
                         {{ chart(chartCompMois) }}
                         {{ chart(chartCompAnnee) }}
                     </script>
