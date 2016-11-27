@@ -81,6 +81,9 @@ class DetailController extends Controller
 
             $infosGain = $this->getInformations($objGain, $puconvert1Gain);
             $infosDep = $this->getInformations($objDep, $puconvert1Dep);
+            $seriesGainJour = array(
+                array("name" => "Data Serie Name", "data" => $infosGain->getDatasjour(), "color"=>"green", "labels" => $infosGain->getLabelsjour())
+            );
             $seriesGainMois = array(
                 array("name" => "Data Serie Name", "data" => $infosGain->getDatasmois(), "color"=>"green", "labels" => $infosGain->getLabelsmois())
             );
@@ -90,8 +93,15 @@ class DetailController extends Controller
             $seriesDepMois = array(
                 array("name" => "Data Serie Name", "data" => $infosDep->getDatasmois(), "color"=>"red", "labels" => $infosDep->getLabelsmois())
             );
+            $seriesDepjour = array(
+                array("name" => "Data Serie Name", "data" => $infosDep->getDatasjour(), "color"=>"red", "labels" => $infosDep->getLabelsjour())
+            );
             $seriesDepAnnee = array(
                 array("name" => "Data Serie Name", "data" => $infosDep->getDatasannee(), "color"=>"red", "labels" => $infosDep->getLabelsannee())
+            );
+            $seriesCompJour = array(
+                array("name" => "Depenses", "data" => $infosDep->getDatasjour(), "color"=>"red", "labels" => $infosDep->getLabelsjour()),
+                array("name" => "Gains", "data" => $infosGain->getDatasjour(), "color"=>"green", "labels" => $infosGain->getLabelsjour())
             );
             $seriesCompMois = array(
                 array("name" => "Depenses", "data" => $infosDep->getDatasmois(), "color"=>"red", "labels" => $infosDep->getLabelsmois()),
@@ -102,6 +112,13 @@ class DetailController extends Controller
                 array("name" => "Gains", "data" => $infosGain->getDatasannee(), "color"=>"green", "labels" => $infosGain->getLabelsannee())
             );
 
+            $chGainJour->chart->renderTo('linechart1');
+            $chGainJour->title->text('Gains en fonction des jour');
+            $chGainJour->xAxis->title(array('text' => "Jours"));
+            $chGainJour->yAxis->title(array('text' => "Montants des gains (".$this->getUser()->getSettings()->getMonnaie1()->getCode().")"));
+            $chGainJour->series($seriesGainJour);
+            $chGainJour->xAxis->categories($infosGain->getLabelsjour());
+            
             $chGainMois->chart->renderTo('linechart1');
             $chGainMois->title->text('Gains en fonction des mois');
             $chGainMois->xAxis->title(array('text' => "Mois"));
@@ -116,6 +133,13 @@ class DetailController extends Controller
             $chGainAnnee->series($seriesGainAnnee);
             $chGainAnnee->xAxis->categories($infosGain->getLabelsannee());
 
+            $chDepJour->chart->renderTo('linechart3');
+            $chDepJour->title->text('Depenses en fonction des jour');
+            $chDepJour->xAxis->title(array('text' => "Jour"));
+            $chDepJour->yAxis->title(array('text' => "Montants des depenses (".$this->getUser()->getSettings()->getMonnaie1()->getCode().")"));
+            $chDepJour->series($seriesDepJour);
+            $chDepJour->xAxis->categories($infosDep->getLabelsjour());
+            
             $chDepMois->chart->renderTo('linechart3');
             $chDepMois->title->text('Depenses en fonction des mois');
             $chDepMois->xAxis->title(array('text' => "Mois"));
@@ -130,6 +154,12 @@ class DetailController extends Controller
             $chDepAnnee->series($seriesDepAnnee);
             $chDepAnnee->xAxis->categories($infosDep->getLabelsannee());
 
+            $chCompJour->chart->renderTo('linechart5');
+            $chCompJour->title->text('Confrontation des gains et depenses en fonction des jour');
+            $chCompJour->xAxis->title(array('text' => "Jour"));
+            $chCompJour->yAxis->title(array('text' => "Montants"));
+            $chCompJour->series($seriesCompJour);
+            
             $chCompMois->chart->renderTo('linechart5');
             $chCompMois->title->text('Confrontation des gains et depenses en fonction des mois');
             $chCompMois->xAxis->title(array('text' => "Mois"));
@@ -150,8 +180,8 @@ class DetailController extends Controller
         $form = $this->get('form.factory')->create(ProductionType::class, $production);
         
         return $this->render('WAZAComptabiliteBundle:Core:list_ob_prod.html.twig', array('datas' => $production, 'objGain' => $objGain,
-            'objDep' => $objDep, 'src' => 'prod_op', 'chartGainMois' => $chGainMois, 'chartGainAnnee' => $chGainAnnee,
-            'chartDepMois' => $chDepMois, 'chartDepAnnee' => $chDepAnnee, 'chartCompMois' => $chCompMois, 'chartCompAnnee' => $chCompAnnee,
+            'objDep' => $objDep, 'src' => 'prod_op', 'chartGainJour' => $chGainJour, 'chartGainMois' => $chGainMois, 'chartGainAnnee' => $chGainAnnee,
+            'chartDepJour' => $chDepJour, 'chartDepMois' => $chDepMois, 'chartDepAnnee' => $chDepAnnee, 'chartCompJour' => $chCompJour, 'chartCompMois' => $chCompMois, 'chartCompAnnee' => $chCompAnnee,
             'puconvert1Gain'=>$puconvert1Gain, 'puconvert2Gain'=>$puconvert2Gain, 'puconvert3Gain'=>$puconvert3Gain,
             'page'=> 'detailproduction', 'titre'=>$titre, 'puconvert1Dep'=>$puconvert1Dep, 'puconvert2Dep'=>$puconvert2Dep, 'puconvert3Dep'=>$puconvert3Dep, 'id' => $id,
             'convertbudget' => $convertBudget, 'convertbeneficev' => $convertBeneficev, 'modal'=> false, 'formEditModal' => $form->createView()));
